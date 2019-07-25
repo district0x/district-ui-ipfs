@@ -5,7 +5,11 @@
 Clojurescript [re-mount](https://github.com/district0x/d0x-INFRA/blob/master/re-mount.md) module, that takes care of setting up IPFS instance for working with [re-frame-ipfs-fx](https://github.com/district0x/re-frame-ipfs-fx). 
 
 ## Installation
-Add `[district0x/district-ui-ipfs "1.0.0"]` into your project.clj  
+Add <br>
+
+[![Clojars Project](https://img.shields.io/clojars/v/district0x/district-ui-ipfs.svg)](https://clojars.org/district0x/district-ui-ipfs)
+
+into your project.clj  
 Include `[district.ui.ipfs]` in your CLJS file, where you use `mount/start`
 
 ## API Overview
