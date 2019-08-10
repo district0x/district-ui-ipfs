@@ -48,10 +48,10 @@
     (let [ipfs (subscribe [::subs/ipfs])]
 
       (-> (mount/with-args
-            {:ipfs {:host "https://ipfs.io" :endpoint "/api/v0"}})
+            {:ipfs {:host "http://localhost:5001" :gateway "http://localhost:8080/ipfs" :endpoint "/api/v0"}})
         (mount/start))
 
       (dispatch [::list-files "/ipfs/QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG/"])
 
       (wait-for [::on-list-files-success ::error]
-        (is (= @ipfs {:host "https://ipfs.io" :endpoint "/api/v0"}))))))
+        (is (= @ipfs {:host "http://localhost:5001" :endpoint "/api/v0" :gateway "http://localhost:8080/ipfs"}))))))

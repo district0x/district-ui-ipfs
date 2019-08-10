@@ -14,13 +14,4 @@
 (reg-event-fx
   ::stop
   interceptors
-  (fn []
-    ))
-
-
-
-
-
-
-
-
+  ::stopped)
