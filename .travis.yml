@@ -1,9 +1,31 @@
 sudo: required
 dist: trusty
 language: clojure
-script: lein doo chrome "tests" once
+script: lein doo chrome "tests" once #echo "Can't get test to pass on Travis"
 addons:
   chrome: stable
+notifications:
+  slack:
+    on_success: always
+    on_failure: always
+    rooms:
+    - district0x:53vhalUfg0MitsQwzjP5PWdd#travis-ci
+  email: false
 before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+- wget https://dist.ipfs.io/ipfs-update/v1.5.2/ipfs-update_v1.5.2_linux-amd64.tar.gz -O ipfs-update.tar.gz
+- tar -xzf ipfs-update.tar.gz
+- ipfs-update/ipfs-update install latest
+- ipfs init
+- ipfs daemon > /dev/null &
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+env:
+  global:
+  - secure: HkWUOY4bD71l3KpGJ1uumk0ibaWChVOShnLkKockBRr+NnuQpPXa4mkV5blRrgUh0u6tntwQ+LGzl8XBkfVK7ZxpPErQZrrU5urzjScnskGBxyvEfoRvSLb9zGQJwi3VGOFu6UfmCjVbhMIEM1d2cBAV/K/XV77O9KYhkL03eAzcbATlC/a3dHh6sbbvx3x0cWb9tHQk3wbFeX12sBGBEZLxIjos/imUll5cjMrhKAKm2riyBJborAmWcL1pXkcnRs6EeUCLxR7W5uekIIiU1Cfzcelxu+o7btG8NIbV9EZ+79O5Dxo48c+VueY9YS3s7wI3IvGeOBFzZWN9S5CUhvi5uL3xeskuQXgIDoh6wLByXLuROLPF3GHSAAzSTX3m9lsKrQO1PIJEAlGwjStHXX5AzQHufbBqgq9EhCJvro2XmL7Wd7ztYSoChBo8GM93m2cZmjXgC/Qvqiea0LTiLaifGEuC+1thryu0HlPCO0DfEQJnadvbsnQczo3KSSrBUy5TejLi4qhCz5IxD8iej57tMXMEhoClRoY5wRqKTG+0zy1nVZRYaBl98ytmvxq7P86saNnQI1jgWKFd5PeIrEaWegMM18SNpdvNDuw/esoj7c5kR2zsNh5w5ebdPxzD1RrWCq84VD1Jpicsgw6UMFZSrWQDxREdm8f/7S+b3Vw=
+  - secure: 2Z5kFyIzHXN10EWS7mQ9spD1JGOXVKy+Wj+2Li3nnYBeP2AKiEV7ohUK8Z3ksebUsSAkoIjotuaNvnd31WyiltyZG8xmY0e/A7hTdhijcfA6dgNuHKM6FuWtMfu7nIeRk1p/W7z88DWzWhEEJJHSkWxtidebPwPYVawZry0awEWijfTNEkGrJF4gWNLyhUdkYeAEe4AQaOGmyQ3ejbImlag2BCle7/z/+jRf1Kb+WBLD0ppV8q5w2zsehMv+woC8AJ2KvPtCZfDk5vm1JzNPBcn+fas4vZTMMjXYi1ZcES3AT7nprnmMhUfIef1DiVmpPTtrVITke8jYdL8eu1lLu3cdnwwcSVHxWdX0dImnQFEUpgSg0zSvOBqT7fTd+4OooWTc1BMOuo7RPr/8+tneQnscoZIGUf61BfnRcKG1zA+GIgNNR5Rp+RsKfMN7ltsBS1q6Z+xNMcX5et1b3dk0qi+ub/g8Gf/avWdYA8Pzns3h39m+uaWd8qgzAqfzZVG/9pLzTy2mWrCWQpHLqjPvM1DKq6NFAPqeT5SIHTgCb88tg5Wk2h+6W3mFBdUDplDJDJfAfY2JoHJMiNKmH8so3FqhlXZREHmTusqmgPa5hNOfvmXoeULuppEqc9H6aB9TxhZ/Eu1iGnrVbkI+d12V1NpehebBPBsmP3+6PMAUhVg=
+deploy:
+- provider: script
+  skip_cleanup: true
+  script: lein release :patch
+  on:
+    branch: master

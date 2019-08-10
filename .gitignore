@@ -3,6 +3,7 @@
 /checkouts
 pom.xml
 pom.xml.asc
+package-lock.json
 *.jar
 *.class
 /.lein-*
